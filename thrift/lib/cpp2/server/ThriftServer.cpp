@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <folly/portability/Windows.h>
+#include <folly/portability/Stdlib.h>
+#include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <folly/Conv.h>
@@ -273,11 +276,13 @@ void ThriftServer::setup() {
     // Furthermore, setting flags to 0 and using sigaction prevents SA_RESTART
     // from restarting syscalls after the handler completed. This is important
     // for code using SIGPIPE to interrupt syscalls in other threads.
+#ifndef _WIN32    
     struct sigaction sa = {};
     sa.sa_handler = [](int) {};
     sa.sa_flags = 0;
     sigemptyset(&sa.sa_mask);
     sigaction(SIGPIPE, &sa, nullptr);
+#endif
 
     if (!observer_ && apache::thrift::observerFactory_) {
       observer_ = apache::thrift::observerFactory_->getObserver();

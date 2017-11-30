@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.4.0 FATAL_ERROR)
 
 # Package information
 set(PACKAGE_NAME "thrift")
 project(${PACKAGE_NAME} C CXX)
+if(MSVC)
+set(CMAKE_CXX_STANDARD 17) #Requires CMake 3.1.3
+else()
 set(CMAKE_CXX_STANDARD 14) #Requires CMake 3.1.3
-
+endif()
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -62,11 +65,11 @@ endif(compiler_only OR build_all)
 if(lib_only OR build_all)
   find_package(DoubleConversion REQUIRED)
   find_package(Folly REQUIRED)
-  find_package(GFlags REQUIRED)
-  find_package(Glog REQUIRED)
+  find_package(GFlags)
+  find_package(Glog)
   find_package(Krb5 REQUIRED gssapi)
   find_package(Yarpl)
-  find_package(Wangle REQUIRED)
+  find_package(Wangle)
   find_package(Zlib REQUIRED)
   find_package(Zstd REQUIRED)
   # https://cmake.org/cmake/help/v3.9/module/FindThreads.html

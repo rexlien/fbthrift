@@ -80,7 +80,7 @@ class container_traits {
   template <typename T>
   using is_vector = std::integral_constant<bool,
         !is_map_or_set<T>::value &&
-        decltype(has_push_back(static_cast<T*>(nullptr)))::value>;
+        has_push_back(static_cast<T*>(nullptr))>;
 };
 
 template <int N, int Size, class F, class Tuple>
@@ -468,7 +468,7 @@ class Layout<
 
     FieldPosition& pos_;
   };
-
+  
   struct LayoutTupleAccessor {
     explicit LayoutTupleAccessor(
         LayoutRoot& root,
@@ -484,13 +484,13 @@ class Layout<
             root_.layoutField(self_, pos_, field, x_.template get<Idx>().ref());
       }
     }
-
+    
     LayoutRoot& root_;
     const T& x_;
     LayoutPosition& self_;
     FieldPosition& pos_;
   };
-
+  
   struct FreezeTupleAccessor {
     explicit FreezeTupleAccessor(
         FreezeRoot& root,
@@ -548,8 +548,8 @@ class Layout<
     typename SchemaInfo::Layout& layout_;
     typename SchemaInfo::Helper& helper_;
   };
-
-  template <typename SchemaInfo>
+  
+  /*template <typename SchemaInfo>
   struct LoadTupleAccessor {
     LoadTupleAccessor(
         const typename SchemaInfo::Schema& schema,
@@ -567,7 +567,8 @@ class Layout<
     const typename SchemaInfo::Schema& schema_;
     const typename SchemaInfo::Layout& layout_;
     const std::unordered_map<int, const schema::MemoryField*>& refs_;
-  };
+  };*/
+  
 };
 
 } // apache::thrift::frozen

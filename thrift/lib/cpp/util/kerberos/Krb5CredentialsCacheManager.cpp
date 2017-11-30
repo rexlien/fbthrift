@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <folly/portability/Windows.h>
+#include <folly/portability/Stdlib.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
 
 #include <glog/logging.h>

@@ -31,6 +31,9 @@
 #ifndef _WIN32
 #  include <unistd.h>
 #endif
+#ifdef _WIN32
+    #include <process.h>
+#endif
 #include <ctime>
 
 #include <thrift/compiler/generate/t_generator.h>
@@ -183,18 +186,22 @@ static bool python_generator(
     }
     int ret = 0;
     if (ifile) {
-      // Convert arguments to argv
-      std::vector<char*> argv(arguments.size() + 1);
-      for (size_t i = 0; i < arguments.size(); ++i) {
-        if (arguments[i][0] == '-' &&
-            arguments[i] != "-I" &&
-            arguments[i] != "-o") {
-          arguments[i].insert(0, "-");
+        // Convert arguments to argv
+        std::vector<char*> argv(arguments.size() + 1);
+        for (size_t i = 0; i < arguments.size(); ++i) {
+            if (arguments[i][0] == '-' &&
+                arguments[i] != "-I" &&
+                arguments[i] != "-o") {
+                arguments[i].insert(0, "-");
+            }
+            argv[i] = const_cast<char *>(arguments[i].c_str());
         }
-        argv[i] = const_cast<char *>(arguments[i].c_str());
-      }
-      argv[arguments.size()] = nullptr;
-      ret = execv(pycompiler.c_str(), argv.data());
+        argv[arguments.size()] = nullptr;
+#ifdef _WIN32
+        ret = _execv(pycompiler.c_str(), argv.data());
+#else
+        ret = execv(pycompiler.c_str(), argv.data());
+#endif
     }
     if (!ifile || ret < 0) {
       pwarning(

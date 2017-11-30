@@ -72,7 +72,6 @@ add_library(
   async/HeaderChannelTrait.cpp
   async/HeaderClientChannel.cpp
   async/HeaderServerChannel.cpp
-  async/PcapLoggingHandler.cpp
   async/ProtectionHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
@@ -97,6 +96,14 @@ add_library(
   ${RpcMetadata-cpp2-SOURCES}
   ${Sasl-cpp2-SOURCES}
 )
+
+if(NOT MSVC)
+add_library(
+  thriftcpp2
+  async/PcapLoggingHandler.cpp
+  )
+endif()
+
 add_dependencies(thriftcpp2 Sasl-cpp2-target)
 target_link_libraries(
   thriftcpp2

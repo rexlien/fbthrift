@@ -5,7 +5,7 @@ endif(compiler_only OR build_all)
 
 # Install thrift/lib
 if(lib_only OR build_all)
-  if(UNIX)
+  #if(UNIX)
     add_subdirectory(lib)
-  endif(UNIX)
+  #endif(UNIX)
 endif(lib_only OR build_all)

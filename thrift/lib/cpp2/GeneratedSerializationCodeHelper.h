@@ -23,6 +23,7 @@
 #include <vector>
 
 #include <thrift/lib/cpp2/TypeClass.h>
+#include <thrift/lib/cpp/protocol/TType.h>
 
 /**
  * Specializations of `protocol_methods` encapsulate a collection of
@@ -114,7 +115,8 @@ struct protocol_methods;
     REGISTER_SS_COMMON(Class, Type, Method, TTypeValue)    \
   }
 
-#define REGISTER_INTEGRAL(...) REGISTER_OVERLOAD(integral, __VA_ARGS__)
+#define VC_EXPAND( x ) x
+#define REGISTER_INTEGRAL(...) VC_EXPAND(REGISTER_OVERLOAD(integral, __VA_ARGS__))
 REGISTER_INTEGRAL(std::int8_t, Byte, T_BYTE);
 REGISTER_INTEGRAL(std::int16_t, I16, T_I16);
 REGISTER_INTEGRAL(std::int32_t, I32, T_I32);
@@ -140,7 +142,7 @@ struct protocol_methods<type_class::integral, bool> {
   }
 };
 
-#define REGISTER_FP(...) REGISTER_OVERLOAD(floating_point, __VA_ARGS__)
+#define REGISTER_FP(...) VC_EXPAND(REGISTER_OVERLOAD(floating_point, __VA_ARGS__))
 REGISTER_FP(double, Double, T_DOUBLE);
 REGISTER_FP(float, Float, T_FLOAT);
 #undef REGISTER_FP
@@ -164,11 +166,11 @@ REGISTER_OVERLOAD(string, folly::fbstring, String, T_STRING);
     template <bool ZeroCopy, typename Protocol>                  \
     static typename std::enable_if<!ZeroCopy, std::size_t>::type \
     serializedSize(Protocol& protocol, Type const& in) {         \
-      return protocol.serializedSize##Method(in);                \
+        /*return protocol.serializedSize##Method(in);*/          \
     }                                                            \
   };
 
-#define REGISTER_BINARY(...) REGISTER_ZC(binary, __VA_ARGS__)
+#define REGISTER_BINARY(...) VC_EXPAND(REGISTER_ZC(binary, __VA_ARGS__))
 REGISTER_BINARY(std::string, Binary, T_STRING);
 REGISTER_BINARY(folly::IOBuf, Binary, T_STRING);
 REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);

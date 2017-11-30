@@ -35,7 +35,9 @@
 #include <thrift/lib/cpp2/async/FramingHandler.h>
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <thrift/lib/cpp2/async/SaslNegotiationHandler.h>
+#ifndef _WIN32
 #include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
+#endif
 #include <memory>
 
 #include <deque>
@@ -172,7 +174,9 @@ class Cpp2Channel
     TAsyncTransportHandler,
     wangle::OutputBufferingHandler,
     ProtectionHandler,
+#ifndef _WIN32
     PcapLoggingHandler,
+#endif
     FramingHandler,
     SaslNegotiationHandler,
     Cpp2Channel>

@@ -17,8 +17,9 @@
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#ifndef _WIN32
 #include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
-
+#endif
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/Cursor.h>
 #include <folly/String.h>
@@ -60,15 +61,19 @@ Cpp2Channel::Cpp2Channel(
     saslNegotiationHandler_ = std::make_unique<DummySaslNegotiationHandler>();
   }
   saslNegotiationHandler_->setProtectionHandler(protectionHandler_.get());
+#ifndef _WIN32  
   auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>([this]{
       return protectionHandler_->getProtectionState() ==
           ProtectionHandler::ProtectionState::VALID;
   });
+#endif
   pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
       outputBufferingHandler_,
       protectionHandler_,
+#ifndef _WIN32  
       pcapLoggingHandler,
+#endif
       framingHandler_,
       saslNegotiationHandler_,
       this);

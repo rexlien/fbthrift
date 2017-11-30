@@ -40,6 +40,9 @@ extern "C" {
 #include <folly/Memory.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h>
 
+#ifdef _WIN32
+typedef unsigned int uint;
+#endif
 namespace std {
 
 // For converting krb5_principal to a string: this specialization

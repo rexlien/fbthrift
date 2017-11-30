@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include <folly/portability/Windows.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
 
 #include <gssapi/gssapi_generic.h>

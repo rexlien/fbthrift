@@ -65,6 +65,7 @@ target_link_libraries(
 )
 # Force compiler_generators linking (compiler will optimize it out otherwise)
 if(MSVC)
+  set_property(TARGET compiler_generators PROPERTY CXX_STANDARD 14)
   set(GENERATE_LINKED compiler_generators) #MSVC WHOLEARCHIVE is set after exe
 elseif(APPLE)
   set(GENERATE_LINKED -Wl,-force_load compiler_generators)

@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <random>
 
 namespace apache { namespace thrift { namespace transport {
 
@@ -209,7 +210,11 @@ void TSocketPool::open() {
   }
 
   if (randomize_ && numServers > 1) {
-    random_shuffle(servers_.begin(), servers_.end());
+    //random_shuffle(servers_.begin(), servers_.end());
+    
+    std::random_device rng;
+    std::mt19937 urng(rng());
+    std::shuffle(servers_.begin(), servers_.end(), urng);
   }
 
   unsigned int numServersToTry = min(maxServersToTry_,
