@@ -79,6 +79,7 @@ add_library(
   async/SaslNegotiationHandler.cpp
   async/GssSaslClient.cpp
   async/GssSaslServer.cpp
+  async/StubSaslServer.cpp
   security/KerberosSASLHandshakeClient.cpp
   security/KerberosSASLHandshakeServer.cpp
   security/KerberosSASLHandshakeUtils.cpp
