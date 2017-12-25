@@ -31,7 +31,7 @@
 #include <chrono>
 
 // Don't include the unknown client.
-#define CLIENT_TYPES_LEN 7
+#define CLIENT_TYPES_LEN 10
 
 // These are local to this build and never appear on the wire.
 enum CLIENT_TYPE {
