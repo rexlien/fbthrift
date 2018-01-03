@@ -99,8 +99,8 @@ add_library(
 )
 
 if(NOT MSVC)
-add_library(
-  thriftcpp2
+target_sources(
+  thriftcpp2 PRIVATE
   async/PcapLoggingHandler.cpp
   )
 endif()
