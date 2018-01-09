@@ -9,3 +9,5 @@ if(lib_only OR build_all)
     add_subdirectory(lib)
   #endif(UNIX)
 endif(lib_only OR build_all)
+
+add_dependencies(thriftcpp2 thrift1)

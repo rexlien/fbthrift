@@ -106,6 +106,8 @@ target_sources(
 endif()
 
 add_dependencies(thriftcpp2 Sasl-cpp2-target)
+add_dependencies(thriftcpp2 RpcMetadata-cpp2-target)
+
 target_link_libraries(
   thriftcpp2
 
