@@ -654,20 +654,22 @@ int main(int argc, char** argv) {
   t_program* program = new t_program(input_file);
   if (out_path.size()) {
     program->set_out_path(out_path, out_path_is_absolute);
+	program->set_include_prefix(out_path);
   }
+  else
+  {
+	  // Compute the cpp include prefix.
+	  // infer this from the filename passed in
+	  string input_filename = arguments[i];
+	  string include_prefix;
 
-  // Compute the cpp include prefix.
-  // infer this from the filename passed in
-  string input_filename = arguments[i];
-  string include_prefix;
+	  string::size_type last_slash = string::npos;
+	  if ((last_slash = input_filename.rfind("/")) != string::npos) {
+		  include_prefix = input_filename.substr(0, last_slash);
+	  }
 
-  string::size_type last_slash = string::npos;
-  if ((last_slash = input_filename.rfind("/")) != string::npos) {
-    include_prefix = input_filename.substr(0, last_slash);
+	  program->set_include_prefix(include_prefix);
   }
-
-  program->set_include_prefix(include_prefix);
-
   // Initialize global types
   g_type_void   = new t_base_type("void",   t_base_type::TYPE_VOID);
   g_type_string = new t_base_type("string", t_base_type::TYPE_STRING);
