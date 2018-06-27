@@ -40,7 +40,7 @@ namespace thrift {
 typedef std::function<void(
     folly::EventBase*,
     std::shared_ptr<apache::thrift::async::TAsyncTransport>,
-    std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
+    std::unique_ptr<folly::IOBuf>, bool* keepTransport)> getHandlerFunc;
 
 typedef std::function<void(const apache::thrift::transport::THeader*,
                            const folly::SocketAddress*)> GetHeaderHandlerFunc;

@@ -336,15 +336,18 @@ void Cpp2Connection::requestReceived(
       useHttpHandler = true;
     }
   }
-
+ 
   if (useHttpHandler && worker_->getServer()->getGetHandler()) {
+    bool keepChannel = false;
     worker_->getServer()->getGetHandler()(
-        worker_->getEventBase(), transport_, req->extractBuf());
+        worker_->getEventBase(), transport_, req->extractBuf(), &keepChannel);
 
     // Close the channel, since the handler now owns the socket.
-    channel_->setCallback(nullptr);
-    channel_->setTransport(nullptr);
-    stop();
+    if(!keepChannel) {
+      channel_->setCallback(nullptr);
+      channel_->setTransport(nullptr);
+      stop();
+    }
     return;
   }
 

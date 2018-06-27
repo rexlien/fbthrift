@@ -125,7 +125,23 @@ unique_ptr<IOBuf> THeader::removeUnframed(
 unique_ptr<IOBuf> THeader::removeHttpServer(IOBufQueue* queue) {
   protoId_ = T_BINARY_PROTOCOL;
   // Users must explicitly support this.
-  return queue->move();
+
+  //assume header
+  auto ioBuf = queue->front();
+  queue->gather(ioBuf->computeChainDataLength());
+  int length = ioBuf->length();
+  if(length >= 4)
+  {
+    const uint8_t* tailCLCR = ioBuf->tail() - 4;
+    const char* CLCR = "\r\n\r\n";
+    if(!memcmp(tailCLCR, CLCR, 4))
+    {
+      return queue->move();
+    }
+    return nullptr;
+
+  }
+  
 }
 
 unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
