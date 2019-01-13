@@ -548,7 +548,7 @@ class Layout<
     typename SchemaInfo::Layout& layout_;
     typename SchemaInfo::Helper& helper_;
   };
-#ifndef _WIN32  
+//#ifndef _WIN32  
   template <typename SchemaInfo>
   struct LoadTupleAccessor {
     LoadTupleAccessor(
@@ -568,7 +568,7 @@ class Layout<
     const typename SchemaInfo::Layout& layout_;
     const std::unordered_map<int, const schema::MemoryField*>& refs_;
   };
-#endif  
+//#endif  
 };
 
 } // apache::thrift::frozen
